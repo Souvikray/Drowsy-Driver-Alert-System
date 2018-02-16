@@ -8,10 +8,24 @@ import numpy as np
 import cv2
 import dlib
 from scipy.spatial import distance as dist
+from twilio.rest import Client
 import pyglet
 import pygame
 import geocoder
+import sqlite3
 
+
+def eye_aspect_ratio(eye):
+    # compute the euclidean distance between the vertical eye landmarks
+    A = dist.euclidean(eye[1], eye[5])
+    B = dist.euclidean(eye[2], eye[4])
+
+    # compute the euclidean distance between the horizontal eye landmarks
+    C = dist.euclidean(eye[0], eye[3])
+
+    # compute the EAR
+    ear = (A + B) / (2 * C)
+    return ear
 
 def play_alarm():
     foo = pyglet.media.load("/home/souvik/Downloads/alarm3.mp3")
@@ -40,6 +54,42 @@ def get_current_location(g_maps_url):
     return current_location
 
 
+def send_alert_message(driver, contact_list, current_location):
+    # twilio credentials
+    account_sid = "*******************************"
+    auth_token = "********************************"
+    sender = "************"
+    message = "Test Message: {} doesn't seem okay.Please check.Last known location: {}".format(driver, current_location)
+
+    client = Client(account_sid, auth_token)
+    for num in contact_list:
+        client.messages.create(
+            to="+91"+str(num),
+            from_=sender,
+            body=message
+        )
+
+
+def fetch_contact_list(driver):
+    # create an empty list that will store the user's contact numbers
+    contacts = []
+    # create a database object
+    db = sqlite3.connect("user_info")
+    # create a cursor object
+    cursor = db.cursor()
+    args = (driver,)
+    # create a select query
+    select_query = "SELECT contact1_num, contact2_num, contact3_num FROM contacts WHERE user_name=(?)"
+    # execute the query
+    result = cursor.execute(select_query, args)
+    for row in result:
+        contacts.append(row[0])
+        contacts.append(row[1])
+        contacts.append(row[2])
+    #print(contacts)
+    return contacts
+
+
 JAWLINE_POINTS = list(range(0, 17))
 RIGHT_EYEBROW_POINTS = list(range(17, 22))
 LEFT_EYEBROW_POINTS = list(range(22, 27))
@@ -59,17 +109,6 @@ TOTAL = 0
 ALARM_ON = False
 g_maps_url = "http://maps.google.com/?q={},{}"
 
-def eye_aspect_ratio(eye):
-    # compute the euclidean distance between the vertical eye landmarks
-    A = dist.euclidean(eye[1], eye[5])
-    B = dist.euclidean(eye[2], eye[4])
-
-    # compute the euclidean distance between the horizontal eye landmarks
-    C = dist.euclidean(eye[0], eye[3])
-
-    # compute the EAR
-    ear = (A + B) / (2 * C)
-    return ear
 
 # to detect the facial region
 detector = dlib.get_frontal_face_detector()
@@ -123,6 +162,7 @@ while CONTINUOUS_FRAMES:
                     cv2.putText(frame, "DROWSINESS ALERT!", (10, 30),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 
+                # if long inactivity is found
                 if COUNTER >= 25:
                     print("Something wrong?")
                     CONTINUOUS_FRAMES = False
@@ -146,8 +186,12 @@ cap.release()
 # destroy all windows
 cv2.destroyAllWindows()
 
-# send message to the person's 5 immediate contacts
+driver = "Souvik"
+# send message to the person's 3 immediate contacts
 current_location = get_current_location(g_maps_url)
-print(current_location)
+# get the contact list of the person
+contact_list = fetch_contact_list(driver)
+send_alert_message(driver, contact_list, current_location)
+#print(current_location)
 sys.exit()
 
