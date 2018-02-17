@@ -55,11 +55,9 @@ def get_current_location(g_maps_url):
 
 def send_alert_message(driver, contact_list, current_location):
     # twilio credentials
-    #account_sid = "ACe2a65cf292aa88f9f7de423da57272f4"
     account_sid = "***********************************"
-    #auth_token = "a69c7314e762fa94879da5e85d69bdd3"
     auth_token = "***********************************"
-    sender = "+12562902814"
+    sender = "************"
     message = "Test Message Last known location: {}".format(current_location)
 
     client = Client(account_sid, auth_token)
