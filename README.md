@@ -23,31 +23,31 @@ https://github.com/Souvikray/Eye-Blink-Detection/blob/master/README.md
 
 Now let me show you my application in action
 
-1. Initially the driver takes the wheel
+**1. Initially the driver takes the wheel**
 
 ![Alt text](https://github.com/Souvikray/Drowsy-Driver-Alert-System/blob/master/screenshot1.jpg?raw=true "Optional Title")
 
-2. The face is detected
+**2. The face is detected**
 
 ![Alt text](https://github.com/Souvikray/Drowsy-Driver-Alert-System/blob/master/screenshot2.png?raw=true "Optional Title")
 
-3. The system initiates a face recognition scan
+**3. The system initiates a face recognition scan**
 
 ![Alt text](https://github.com/Souvikray/Drowsy-Driver-Alert-System/blob/master/screenshot3.png?raw=true "Optional Title")
 
-4. The system localises the eye region
+**4. The system localises the eye region**
 
 ![Alt text](https://github.com/Souvikray/Drowsy-Driver-Alert-System/blob/master/screenshot4.png?raw=true "Optional Title")
 
-5. The system starts eye blink detection check
+**5. The system starts eye blink detection check**
 
 ![Alt text](https://github.com/Souvikray/Drowsy-Driver-Alert-System/blob/master/screenshot5.png?raw=true "Optional Title")
 
-6. If drowsiness detected, an alert sound is played
+**6. If drowsiness detected, an alert sound is played**
 
 ![Alt text](https://github.com/Souvikray/Drowsy-Driver-Alert-System/blob/master/screenshot6.png?raw=true "Optional Title")
 
-7. If driver is inactive for long duration an emergency alert message is sent to the driver’s contacts
+**7. If driver is inactive for long duration an emergency alert message is sent to the driver’s contacts**
 
 ![Alt text](https://github.com/Souvikray/Drowsy-Driver-Alert-System/blob/master/screenshot7.png?raw=true "Optional Title")
 
