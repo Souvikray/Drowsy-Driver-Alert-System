@@ -21,6 +21,8 @@ https://github.com/Souvikray/Realtime-Face-Recognition/blob/master/README.md
 
 https://github.com/Souvikray/Eye-Blink-Detection/blob/master/README.md
 
+**NOTE** I have already trained my system for face recognition.Here I am simply loading up the yml file that contains the pretrained data to speed up the system.
+
 Now let me show you my application in action
 
 **1. Initially the driver takes the wheel**
@@ -51,6 +53,8 @@ Now let me show you my application in action
 
 ![Alt text](https://github.com/Souvikray/Drowsy-Driver-Alert-System/blob/master/screenshot7.png?raw=true "Optional Title")
 
+Here is a short gif showing the system in action
 
+<a href="https://imgflip.com/gif/2anlqf"><img src="https://i.imgflip.com/2anlqf.gif" title="made at imgflip.com"/></a>
 
 
