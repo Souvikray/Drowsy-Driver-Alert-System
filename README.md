@@ -55,6 +55,6 @@ Now let me show you my application in action
 
 Here is a short gif showing the system in action
 
-<a href="https://imgflip.com/gif/2anlqf"><img src="https://i.imgflip.com/2anlqf.gif" title="made at imgflip.com"/></a>
+<a href="https://imgflip.com/gif/2anma4"><img src="https://i.imgflip.com/2anma4.gif" title="made at imgflip.com"/></a>
 
 
