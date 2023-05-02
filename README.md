@@ -1,9 +1,16 @@
+## Note from Fork owner [psychoSherlokc](https://psychoSherlock.github.io)
+
+This fork contains fix for `index error` running the file.
+If you want to create a custom `trainer.yml` file, use (this repo)[https://github.com/ITCoders/Human-detection-and-Tracking.git]
+
+# Note from Author [Souvikrat](https://github.com/souvikray/)
+
 I have build an application that can detect the drowsiness of a driver and alert the driver before any fatal incident occurs.
 
 There are basically three phases in the system
 
- **FACE RECOGNITION**
- 
+**FACE RECOGNITION**
+
 This section uses the OpenCV Library to perform the operations. Initially, the driver has to take the driving seat. As soon as the system detects a face, it initiates the process of face recognition.So here, certain continuous frames of the driver’s face is used to identify the face of the driver. The system compares the given frame with the saved pictures of the person in the database. If a match is found, the system identifies the face and shows the name of the person on the screen.
 The system also saves the identified person’s name and fetches the contacts of that person from the database to be used in case of emergency.
 
@@ -56,5 +63,3 @@ Now let me show you my application in action
 Here is a short gif showing the system in action
 
 <a href="https://imgflip.com/gif/2anma4"><img src="https://i.imgflip.com/2anma4.gif" title="made at imgflip.com"/></a>
-
-

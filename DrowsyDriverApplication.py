@@ -14,21 +14,31 @@ import geocoder
 import sqlite3
 
 
+# def eye_aspect_ratio(eye):
+#     # compute the euclidean distance between the vertical eye landmarks
+#     A = dist.euclidean(eye[1], eye[5])
+#     B = dist.euclidean(eye[2], eye[4])
+
+#     # compute the euclidean distance between the horizontal eye landmarks
+#     C = dist.euclidean(eye[0], eye[3])
+
+#     # compute the EAR
+#     ear = (A + B) / (2 * C)
+#     return ear
+
+
 def eye_aspect_ratio(eye):
-    # compute the euclidean distance between the vertical eye landmarks
-    A = dist.euclidean(eye[1], eye[5])
-    B = dist.euclidean(eye[2], eye[4])
-
-    # compute the euclidean distance between the horizontal eye landmarks
-    C = dist.euclidean(eye[0], eye[3])
-
-    # compute the EAR
-    ear = (A + B) / (2 * C)
+    # Vertical (Top and Bottom)
+    A = np.linalg.norm(np.ravel(eye[1]) - np.ravel(eye[5]))
+    B = np.linalg.norm(np.ravel(eye[2]) - np.ravel(eye[4]))
+    # Horizontal (left and right)
+    C = np.linalg.norm(np.ravel(eye[0]) - np.ravel(eye[3]))
+    ear = (A+B)/(2.0 * C)
     return ear
 
 
 def play_alarm():
-    foo = pyglet.media.load("/home/souvik/Downloads/alarm3.mp3")
+    foo = pyglet.media.load("alarm3.mp3")
     foo.play()
 
     def exiter(dt):
@@ -40,19 +50,19 @@ def play_alarm():
 
 def play_alarm2():
     pygame.mixer.init()
-    sound = pygame.mixer.Sound("/home/souvik/Downloads/alarm_beep.wav")
+    sound = pygame.mixer.Sound("alarm3.mp3")
     sound.play()
     time.sleep(4)
 
 
 def get_current_location(g_maps_url):
     g = geocoder.ip('me')
-    #lat = g.latlng[0] + 2.64
+    # lat = g.latlng[0] + 2.64
     lat = g.latlng[0]
-    #long = g.latlng[1] + 1.3424
+    # long = g.latlng[1] + 1.3424
     long = g.latlng[1]
-    #print(lat, long)
-    current_location =  g_maps_url.format(lat, long)
+    # print(lat, long)
+    current_location = g_maps_url.format(lat, long)
     return current_location
 
 
@@ -61,7 +71,8 @@ def send_alert_message(driver, contact_list, current_location):
     account_sid = "***********************************"
     auth_token = "***********************************"
     sender = "+185********"
-    message = "{} doesn't seem okay!Last known location: {}".format(driver, current_location)
+    message = "{} doesn't seem okay!Last known location: {}".format(
+        driver, current_location)
 
     client = Client(account_sid, auth_token)
     for num in contact_list:
@@ -84,12 +95,12 @@ def fetch_contact_list(driver):
     select_query = "SELECT contact1_num, contact2_num, contact3_num FROM contacts WHERE user_name=(?)"
     # execute the query
     result = cursor.execute(select_query, args)
-    #print("result", list(result))
+    # print("result", list(result))
     for row in result:
         contacts.append(row[0])
         contacts.append(row[1])
         contacts.append(row[2])
-    #print(contacts)
+    # print(contacts)
     return contacts
 
 
@@ -132,12 +143,12 @@ face_recognizer.read("trainer.yml")
 
 # capture video from live video stream
 cap = cv2.VideoCapture(0)
-#print(cap.isOpened())
+# print(cap.isOpened())
 while FRAME_PASSED <= 20:
     # get the frame
     ret, frame = cap.read()
     FRAME_PASSED += 1
-    #frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
+    # frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
     if ret:
         # convert the frame to grayscale
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -155,10 +166,10 @@ while FRAME_PASSED <= 20:
                 face_recognized_per_frame_count["Souvik"] += FRAME_PASSED
 
             elif face_person[person_number] is "Satyam":
-                #cv2.putText(frame, face_person[person_number], (x, y), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 255, 0))
+                # cv2.putText(frame, face_person[person_number], (x, y), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 255, 0))
                 face_recognized_per_frame_count["Satyam"] += FRAME_PASSED
             else:
-                #cv2.putText(frame, str(face_person[person_number]), (x, y), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 255))
+                # cv2.putText(frame, str(face_person[person_number]), (x, y), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 255))
                 pass
             if FRAME_PASSED == 20:
                 # get the highest count for the face recognised for 10 frames
@@ -170,7 +181,8 @@ while FRAME_PASSED <= 20:
                         DRIVER_FOUND = key
                         print(DRIVER_FOUND)
                 '''
-                DRIVER_FOUND = [key for key, val in face_recognized_per_frame_count.items() if val == count][0]
+                DRIVER_FOUND = [
+                    key for key, val in face_recognized_per_frame_count.items() if val == count][0]
                 print(DRIVER_FOUND)
                 CONTINUOUS_FRAMES = False
                 break
@@ -183,14 +195,14 @@ cap.release()
 cv2.destroyAllWindows()
 # greet the driver
 os.system("espeak 'Hey....{}, ........Welcome....Please drive carefully.......Have a nice day.....'".format(DRIVER_FOUND))
-print("Second STage")
-cap = cv2.VideoCapture(-1)
+print("Second Stage")
+cap = cv2.VideoCapture(0)
 CONTINUOUS_FRAMES = True
 
 while CONTINUOUS_FRAMES:
     # get the frame
     ret, frame = cap.read()
-    #frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
+    # frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
     if ret:
         # convert the frame to grayscale
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -201,7 +213,8 @@ while CONTINUOUS_FRAMES:
             x1 = rect.right()
             y1 = rect.bottom()
             # get the facial landmarks
-            landmarks = np.matrix([[p.x, p.y] for p in predictor(frame, rect).parts()])
+            landmarks = np.matrix([[p.x, p.y]
+                                  for p in predictor(frame, rect).parts()])
             # get the left eye landmarks
             left_eye = landmarks[LEFT_EYE_POINTS]
             # get the right eye landmarks
@@ -209,7 +222,8 @@ while CONTINUOUS_FRAMES:
             # draw contours on the eyes
             left_eye_hull = cv2.convexHull(left_eye)
             right_eye_hull = cv2.convexHull(right_eye)
-            cv2.drawContours(frame, [left_eye_hull], -1, (0, 255, 0), 1) # (image, [contour], all_contours, color, thickness)
+            # (image, [contour], all_contours, color, thickness)
+            cv2.drawContours(frame, [left_eye_hull], -1, (0, 255, 0), 1)
             cv2.drawContours(frame, [right_eye_hull], -1, (0, 255, 0), 1)
             # compute the EAR for the left eye
             ear_left = eye_aspect_ratio(left_eye)
@@ -222,7 +236,7 @@ while CONTINUOUS_FRAMES:
                 COUNTER += 1
                 print(COUNTER)
                 if COUNTER >= EYE_AR_CONSEC_FRAMES:
-                    #TOTAL += 1
+                    # TOTAL += 1
                     if not ALARM_ON:
                         ALARM_ON = True
                         t = Thread(target=play_alarm2)
@@ -243,8 +257,9 @@ while CONTINUOUS_FRAMES:
                 COUNTER = 0
                 ALARM_ON = False
 
-            #cv2.putText(frame, "Blinks{}".format(TOTAL), (10, 30), cv2.FONT_HERSHEY_DUPLEX, 0.7, (0, 255, 255), 1)
-            cv2.putText(frame, "EAR {}".format(ear_avg), (10, 60), cv2.FONT_HERSHEY_DUPLEX, 0.7, (0, 255, 255), 1)
+            # cv2.putText(frame, "Blinks{}".format(TOTAL), (10, 30), cv2.FONT_HERSHEY_DUPLEX, 0.7, (0, 255, 255), 1)
+            cv2.putText(frame, "EAR {}".format(ear_avg), (10, 60),
+                        cv2.FONT_HERSHEY_DUPLEX, 0.7, (0, 255, 255), 1)
         cv2.imshow("Winks Found", frame)
         key = cv2.waitKey(1) & 0xFF
         # When key 'Q' is pressed, exit
@@ -259,7 +274,7 @@ cv2.destroyAllWindows()
 # if the SEND_MESSAGE is activated
 if SEND_MESSAGE:
     driver = DRIVER_FOUND
-    #print("driver", driver)
+    # print("driver", driver)
     # send message to the person's 3 immediate contacts
     current_location = get_current_location(g_maps_url)
     # get the contact list of the person
@@ -267,5 +282,3 @@ if SEND_MESSAGE:
     send_alert_message(driver, contact_list, current_location)
     print(current_location)
 sys.exit()
-
-
