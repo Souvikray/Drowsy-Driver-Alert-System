@@ -1,4 +1,4 @@
-# Note from Fork owner [psychoSherlokc](https://psychoSherlock.github.io)
+# Note from Fork owner [psychoSherlock](https://psychoSherlock.github.io)
 
 This fork contains fix for `index error` running the file.
 If you want to create a custom `trainer.yml` file, use [this repo](https://github.com/ITCoders/Human-detection-and-Tracking.git)
